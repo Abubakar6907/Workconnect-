@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WorkConnect - Login</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Poppins',sans-serif;
+}
+
+body{
+  background:linear-gradient(135deg,#27ae60,#2ecc71);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  min-height:100vh;
+}
+
+/* Container */
+.container{
+  background:white;
+  padding:25px;
+  border-radius:12px;
+  width:100%;
+  max-width:420px;
+  box-shadow:0 8px 25px rgba(0,0,0,0.2);
+  text-align:center;
+}
+
+/* Logo */
+.logo{
+  width:90px;
+  margin-bottom:10px;
+}
+
+/* Titles */
+h1{
+  color:#27ae60;
+  margin-bottom:10px;
+}
+
+h2{
+  margin-bottom:15px;
+  color:#333;
+}
+
+/* Inputs */
+input{
+  width:100%;
+  padding:12px;
+  margin:8px 0;
+  border:1px solid #ccc;
+  border-radius:6px;
+}
+
+/* Button */
+button{
+  width:100%;
+  padding:12px;
+  background:#27ae60;
+  color:white;
+  border:none;
+  border-radius:6px;
+  margin-top:10px;
+  font-weight:600;
+  cursor:pointer;
+}
+
+button:hover{
+  background:#219150;
+}
+
+/* Toggle */
+.toggle{
+  margin-top:15px;
+  color:#2980b9;
+  cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<!-- LOGO -->
+<img src="logo.png" class="logo">
+<h1>WorkConnect</h1>
+
+<!-- LOGIN FIRST -->
+<div id="loginBox">
+<h2>Login</h2>
+
+<input type="email" id="loginEmail" placeholder="Email Address">
+<input type="password" id="loginPassword" placeholder="Password">
+
+<button onclick="login()">Login</button>
+
+<div class="toggle" onclick="showSignup()">Create Account</div>
+</div>
+
+<!-- SIGNUP -->
+<div id="signupBox" style="display:none;">
+<h2>Create Account</h2>
+
+<input type="text" id="firstName" placeholder="First Name">
+<input type="text" id="surname" placeholder="Surname">
+<input type="text" id="middleName" placeholder="Middle Name (Optional)">
+<input type="text" id="address" placeholder="Address">
+<input type="text" id="state" placeholder="State">
+<input type="text" id="lga" placeholder="Local Government">
+
+<input type="text" id="username" placeholder="Username">
+<input type="email" id="signupEmail" placeholder="Email Address">
+
+<input type="password" id="signupPassword" placeholder="Create Password">
+
+<button onclick="signup()">Register</button>
+
+<div class="toggle" onclick="showLogin()">Already have account? Login</div>
+</div>
+
+</div>
+
+<!-- FIREBASE -->
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } 
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+// 🔥 YOUR REAL CONFIG (KA RIGA KA SAKA)
+const firebaseConfig = {
+  apiKey: "AIzaSyC6-U5jWVY4Vhf_N-Rikfm9Ss4grTgMw4A",
+  authDomain: "work-connect-fa647.firebaseapp.com",
+  projectId: "work-connect-fa647",
+  storageBucket: "work-connect-fa647.firebasestorage.app",
+  messagingSenderId: "80462081450",
+  appId: "1:80462081450:web:1b8813f2715510c2f14fd3",
+  measurementId: "G-2FY847SCD7"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+
+// SWITCH PAGES
+window.showSignup = function(){
+  document.getElementById("loginBox").style.display="none";
+  document.getElementById("signupBox").style.display="block";
+}
+
+window.showLogin = function(){
+  document.getElementById("loginBox").style.display="block";
+  document.getElementById("signupBox").style.display="none";
+}
+
+// SIGNUP
+window.signup = function(){
+
+  let email = document.getElementById("signupEmail").value;
+  let password = document.getElementById("signupPassword").value;
+
+  if(!email || !password){
+    alert("Fill all required fields!");
+    return;
+  }
+
+  createUserWithEmailAndPassword(auth, email, password)
+  .then(() => {
+    alert("Account Created Successfully ✅");
+    window.location.href = "dashboard.html";
+  })
+  .catch((error) => {
+    alert(error.message);
+  });
+
+}
+
+// LOGIN
+window.login = function(){
+
+  let email = document.getElementById("loginEmail").value;
+  let password = document.getElementById("loginPassword").value;
+
+  if(!email || !password){
+    alert("Enter login details!");
+    return;
+  }
+
+  signInWithEmailAndPassword(auth, email, password)
+  .then(() => {
+    alert("Login Successful ✅");
+    window.location.href = "dashboard.html";
+  })
+  .catch((error) => {
+    alert(error.message);
+  });
+
+}
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Select Role</title>
+
+<style>
+body{
+  background:linear-gradient(135deg,#27ae60,#2ecc71);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+  font-family:sans-serif;
+}
+
+.container{
+  background:white;
+  padding:30px;
+  border-radius:12px;
+  text-align:center;
+  width:350px;
+}
+
+h2{
+  margin-bottom:20px;
+}
+
+.btn{
+  display:block;
+  width:100%;
+  padding:15px;
+  margin:10px 0;
+  border:none;
+  border-radius:8px;
+  font-size:18px;
+  cursor:pointer;
+}
+
+.worker{
+  background:#27ae60;
+  color:white;
+}
+
+.employer{
+  background:#2c3e50;
+  color:white;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <h2>Select Your Role</h2>
+
+  <button class="btn worker" onclick="selectRole('worker')">
+    I am a Worker
+  </button>
+
+  <button class="btn employer" onclick="selectRole('employer')">
+    I am an Employer
+  </button>
+</div>
+
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyC6-U5jWVY4Vhf_N-Rikfm9Ss4grTgMw4A",
+  authDomain: "work-connect-fa647.firebaseapp.com",
+  projectId: "work-connect-fa647",
+  storageBucket: "work-connect-fa647.appspot.com",
+  messagingSenderId: "80462081450",
+  appId: "1:80462081450:web:1b8813f2715510c2f14fd3"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+window.selectRole = async (role) => {
+  let user = auth.currentUser;
+
+  if(!user){
+    alert("Please login first");
+    return;
+  }
+
+  await updateDoc(doc(db,"users",user.uid),{
+    role: role
+  });
+
+  if(role === "worker"){
+    window.location.href = "worker-dashboard.html";
+  }else{
+    window.location.href = "employer-dashboard.html";
+  }
+};
+
+</script>
+
+</body>
+</html>

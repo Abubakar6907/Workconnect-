@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WorkConnect - Worker Dashboard</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  background: #f4f6f8;
+}
+
+/* HEADER */
+header {
+  background: linear-gradient(135deg, #27ae60, #2ecc71);
+  color: white;
+  padding: 15px;
+  text-align: center;
+}
+
+.logo {
+  width: 70px;
+}
+
+/* SEARCH */
+.search-box {
+  width: 90%;
+  max-width: 400px;
+  margin: 20px auto;
+}
+
+.search-box input {
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+/* CATEGORY */
+.category {
+  padding: 20px;
+}
+
+.category h2 {
+  margin-bottom: 10px;
+  color: #27ae60;
+}
+
+/* JOB GRID */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px,1fr));
+  gap: 10px;
+}
+
+.job {
+  background: white;
+  padding: 12px;
+  border-radius: 10px;
+  text-align: center;
+  cursor: pointer;
+  transition: 0.3s;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.job:hover {
+  background: #27ae60;
+  color: white;
+}
+
+/* FORM */
+#formPage {
+  display: none;
+  padding: 20px;
+}
+
+form {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  max-width: 400px;
+  margin: auto;
+}
+
+input, textarea, select {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+button {
+  width: 100%;
+  padding: 12px;
+  background: #27ae60;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <img src="logo.png" class="logo">
+  <h2>Worker Dashboard</h2>
+</header>
+
+<div id="dashboard">
+
+<div class="search-box">
+  <input type="text" id="search" placeholder="Search job...">
+</div>
+
+<div id="jobsContainer"></div>
+
+</div>
+
+<!-- FORM PAGE -->
+<div id="formPage">
+  <h2 id="jobTitle"></h2>
+
+  <form onsubmit="submitForm(event)">
+    <input type="text" placeholder="Full Name" required>
+    <input type="tel" placeholder="Phone Number" required>
+    <input type="text" placeholder="Location" required>
+    <textarea placeholder="Describe your work..." required></textarea>
+
+    <select required>
+      <option value="">Experience Level</option>
+      <option>Beginner</option>
+      <option>Intermediate</option>
+      <option>Expert</option>
+    </select>
+
+    <button type="submit">Submit</button>
+  </form>
+
+  <br>
+  <button onclick="goBack()">⬅ Back</button>
+</div>
+
+<script>
+
+/* CATEGORY + 200+ JOBS */
+const categories = {
+  "🔧 Technical": [
+    "Electrician","Generator Repair","Solar Installer","AC Repair","Fridge Repair",
+    "Washing Machine Repair","TV Repair","Phone Repair","Laptop Repair","CCTV Installer"
+  ],
+
+  "🚗 Automobile": [
+    "Mechanic","Car Electrician","Panel Beater","Painter","Car Wash",
+    "Tyre Repair","Car AC Repair","Engine Repair","Brake Fix"
+  ],
+
+  "🏠 Home Services": [
+    "Plumber","Carpenter","Furniture Maker","Tiler","POP Ceiling",
+    "Painter","Gate Installer","Door Fix","Window Installer"
+  ],
+
+  "🧹 Cleaning": [
+    "House Cleaner","Office Cleaner","Carpet Cleaning","Sofa Cleaning",
+    "Fumigation","Pest Control"
+  ],
+
+  "👗 Fashion": [
+    "Tailor","Barber","Hair Stylist","Makeup Artist",
+    "Shoe Maker","Laundry","Dry Cleaning"
+  ],
+
+  "🍲 Food & Events": [
+    "Catering","Cake Maker","Small Chops","Event Planner",
+    "MC","DJ","Photographer","Videographer"
+  ],
+
+  "🏗 Construction": [
+    "Bricklayer","Welder","Iron Bender","Roofer","POP Designer"
+  ],
+
+  "🌿 Outdoor": [
+    "Gardener","Landscaper","Tree Cutter"
+  ],
+
+  "🚚 Logistics": [
+    "Dispatch Rider","Truck Driver","Delivery Service"
+  ],
+
+  "🔐 Security": [
+    "Security Guard","Bouncer","Private Guard"
+  ]
+};
+
+/* RENDER JOBS */
+function renderJobs() {
+  let container = document.getElementById("jobsContainer");
+  let search = document.getElementById("search").value.toLowerCase();
+  container.innerHTML = "";
+
+  for (let cat in categories) {
+    let jobs = categories[cat].filter(j => j.toLowerCase().includes(search));
+
+    if (jobs.length > 0) {
+      let div = document.createElement("div");
+      div.className = "category";
+
+      div.innerHTML = `<h2>${cat}</h2><div class="grid"></div>`;
+
+      let grid = div.querySelector(".grid");
+
+      jobs.forEach(job => {
+        let j = document.createElement("div");
+        j.className = "job";
+        j.innerText = job;
+        j.onclick = () => openForm(job);
+        grid.appendChild(j);
+      });
+
+      container.appendChild(div);
+    }
+  }
+}
+
+document.getElementById("search").addEventListener("input", renderJobs);
+
+/* OPEN FORM */
+function openForm(job) {
+  document.getElementById("dashboard").style.display = "none";
+  document.getElementById("formPage").style.display = "block";
+  document.getElementById("jobTitle").innerText = job;
+}
+
+/* BACK */
+function goBack() {
+  document.getElementById("formPage").style.display = "none";
+  document.getElementById("dashboard").style.display = "block";
+}
+
+/* SUBMIT */
+function submitForm(e) {
+  e.preventDefault();
+  alert("Application Submitted!");
+  goBack();
+}
+
+/* INIT */
+renderJobs();
+
+</script>
+
+</body>
+</html>

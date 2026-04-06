@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Employer Dashboard</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
+body {
+  font-family: Poppins;
+  background: #f4f6f8;
+}
+
+/* HEADER */
+header {
+  background: linear-gradient(135deg,#27ae60,#2ecc71);
+  color: white;
+  padding: 15px;
+  text-align: center;
+}
+
+.logo {
+  width: 150px;
+}
+
+/* STATS */
+.stats {
+  display: flex;
+  justify-content: space-around;
+  margin: 20px;
+}
+
+.card {
+  background: white;
+  padding: 15px;
+  border-radius: 10px;
+  width: 30%;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+/* FILTER */
+.filter {
+  text-align: center;
+  margin: 20px;
+}
+
+.filter input {
+  padding: 10px;
+  width: 200px;
+}
+
+/* REQUEST */
+.request {
+  background: white;
+  margin: 15px;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.request button {
+  margin: 5px;
+  padding: 8px 12px;
+  border: none;
+  cursor: pointer;
+}
+
+.accept { background: green; color: white; }
+.reject { background: red; color: white; }
+.contact { background: blue; color: white; }
+</style>
+</head>
+
+<body>
+
+<header>
+  <img src="logo.png" class="logo">
+  <h2>Employer Dashboard</h2>
+</header>
+
+<!-- STATS -->
+<div class="stats">
+  <div class="card">
+    <h3 id="totalReq">0</h3>
+    <p>Requests</p>
+  </div>
+  <div class="card">
+    <h3 id="accepted">0</h3>
+    <p>Accepted</p>
+  </div>
+  <div class="card">
+    <h3 id="rejected">0</h3>
+    <p>Rejected</p>
+  </div>
+</div>
+
+<!-- FILTER -->
+<div class="filter">
+  <input type="text" id="search" placeholder="Search job...">
+</div>
+
+<!-- REQUESTS -->
+<div id="requests"></div>
+
+<script>
+
+/* GET DATA */
+let data = JSON.parse(localStorage.getItem("applications")) || [];
+
+/* RENDER */
+function render() {
+  let container = document.getElementById("requests");
+  let search = document.getElementById("search").value.toLowerCase();
+
+  container.innerHTML = "";
+
+  let filtered = data.filter(d => d.job.toLowerCase().includes(search));
+
+  document.getElementById("totalReq").innerText = filtered.length;
+
+  filtered.forEach((d, index) => {
+    let div = document.createElement("div");
+    div.className = "request";
+
+    div.innerHTML = `
+      <h3>${d.job}</h3>
+      <p><b>Name:</b> ${d.name}</p>
+      <p><b>Phone:</b> ${d.phone}</p>
+      <p><b>Location:</b> ${d.location}</p>
+      <p><b>Description:</b> ${d.desc}</p>
+      <p><b>Time:</b> ${d.time}</p>
+
+      <button class="accept" onclick="accept(${index})">Accept</button>
+      <button class="reject" onclick="reject(${index})">Reject</button>
+      <button class="contact" onclick="contact('${d.phone}')">Contact</button>
+    `;
+
+    container.appendChild(div);
+  });
+}
+
+/* ACTIONS */
+function accept(i) {
+  alert("Worker Accepted ✅");
+}
+
+function reject(i) {
+  alert("Worker Rejected ❌");
+}
+
+function contact(phone) {
+  window.location.href = "tel:" + phone;
+}
+
+document.getElementById("search").addEventListener("input", render);
+
+render();
+
+</script>
+
+</body>
+</html>

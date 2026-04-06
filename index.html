@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WorkConnect</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  background: linear-gradient(135deg, #27ae60, #2ecc71);
+  color: white;
+  text-align: center;
+}
+
+/* Container */
+.container {
+  padding: 50px 20px;
+  max-width: 900px;
+  margin: auto;
+}
+
+/* Logo */
+.logo {
+  width: 150px;
+  height: auto;
+  margin-bottom: 30px;
+}
+
+/* Title */
+h1 {
+  font-size: 42px;
+  margin-bottom: 15px;
+}
+
+/* Paragraph */
+p {
+  font-size: 17px;
+  line-height: 1.8;
+  margin-bottom: 20px;
+}
+
+/* Button */
+.btn {
+  padding: 15px 35px;
+  background: white;
+  color: #27ae60;
+  border: none;
+  border-radius: 8px;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.btn:hover {
+  background: #f1f1f1;
+  transform: scale(1.05);
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <!-- LOGO -->
+  <!-- ⚠️ Ka saka sunan file ɗin logo naka a nan -->
+  <img src="logo.png" alt="WorkConnect Logo" class="logo">
+
+  <!-- TITLE -->
+  <h1>WorkConnect</h1>
+
+  <!-- DESCRIPTION -->
+  <p>
+    WorkConnect is a powerful platform designed to connect skilled workers with people who need services quickly and safely.
+    In many parts of Nigeria, there are talented individuals such as mechanics, electricians, tailors, and technicians who struggle to find customers.
+  </p>
+
+  <p>
+    At the same time, many people find it difficult to locate trusted and reliable workers when they need help.
+    WorkConnect solves this problem by bringing both sides together in one place.
+  </p>
+
+  <p>
+    With a smart rating system, workers earn stars based on their performance, helping them build trust and attract more clients.
+    Customers can easily choose the best worker based on ratings and reviews.
+  </p>
+
+  <p>
+    WorkConnect is not just a platform — it is a solution to empower skills, create jobs, and make everyday services easier to access.
+  </p>
+
+  <!-- BUTTON -->
+  <button class="btn" onclick="goNext()">Get Started</button>
+
+</div>
+
+<script>
+function goNext() {
+  window.location.href = "auth.html"; // Next page
+}
+</script>
+
+</body>
+</html>
