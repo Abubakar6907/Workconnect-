@@ -40,10 +40,10 @@ body{
   margin-bottom:10px;
 }
 
-/* Titles */
+/* Title */
 h1{
   color:#27ae60;
-  margin-bottom:10px;
+  margin-bottom:15px;
 }
 
 h2{
@@ -77,7 +77,6 @@ button:hover{
   background:#219150;
 }
 
-/* Toggle */
 .toggle{
   margin-top:15px;
   color:#2980b9;
@@ -91,23 +90,23 @@ button:hover{
 <div class="container">
 
 <!-- LOGO -->
-<img src="logo.png" class="logo">
+<img src="logo.png" alt="WorkConnect Logo" class="logo">
 <h1>WorkConnect</h1>
 
 <!-- LOGIN FIRST -->
-<div id="loginBox">
+<div id="login">
 <h2>Login</h2>
 
-<input type="email" id="loginEmail" placeholder="Email Address">
+<input type="email" id="loginEmail" placeholder="Email">
 <input type="password" id="loginPassword" placeholder="Password">
 
 <button onclick="login()">Login</button>
 
-<div class="toggle" onclick="showSignup()">Create Account</div>
+<div class="toggle" onclick="showSignup()">Don't have account? Register</div>
 </div>
 
 <!-- SIGNUP -->
-<div id="signupBox" style="display:none;">
+<div id="signup" style="display:none;">
 <h2>Create Account</h2>
 
 <input type="text" id="firstName" placeholder="First Name">
@@ -118,25 +117,41 @@ button:hover{
 <input type="text" id="lga" placeholder="Local Government">
 
 <input type="text" id="username" placeholder="Username">
-<input type="email" id="signupEmail" placeholder="Email Address">
+<input type="email" id="email" placeholder="Email Address">
 
-<input type="password" id="signupPassword" placeholder="Create Password">
+<input type="password" id="password" placeholder="Create Password">
+<input type="password" id="confirmPassword" placeholder="Confirm Password">
 
-<button onclick="signup()">Register</button>
+<button onclick="signup()">Sign Up</button>
 
 <div class="toggle" onclick="showLogin()">Already have account? Login</div>
 </div>
 
 </div>
 
+<script>
+// Toggle
+function showSignup(){
+  document.getElementById("login").style.display="none";
+  document.getElementById("signup").style.display="block";
+}
+
+function showLogin(){
+  document.getElementById("login").style.display="block";
+  document.getElementById("signup").style.display="none";
+}
+</script>
+
 <!-- FIREBASE -->
 <script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } 
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { 
+  getAuth, 
+  createUserWithEmailAndPassword, 
+  signInWithEmailAndPassword 
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-// 🔥 YOUR REAL CONFIG (KA RIGA KA SAKA)
 const firebaseConfig = {
   apiKey: "AIzaSyC6-U5jWVY4Vhf_N-Rikfm9Ss4grTgMw4A",
   authDomain: "work-connect-fa647.firebaseapp.com",
@@ -150,60 +165,41 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-// SWITCH PAGES
-window.showSignup = function(){
-  document.getElementById("loginBox").style.display="none";
-  document.getElementById("signupBox").style.display="block";
-}
-
-window.showLogin = function(){
-  document.getElementById("loginBox").style.display="block";
-  document.getElementById("signupBox").style.display="none";
-}
-
 // SIGNUP
-window.signup = function(){
+window.signup = function () {
+  let email = document.getElementById("email").value;
+  let password = document.getElementById("password").value;
+  let confirm = document.getElementById("confirmPassword").value;
 
-  let email = document.getElementById("signupEmail").value;
-  let password = document.getElementById("signupPassword").value;
-
-  if(!email || !password){
-    alert("Fill all required fields!");
+  if(password !== confirm){
+    alert("Passwords do not match!");
     return;
   }
 
   createUserWithEmailAndPassword(auth, email, password)
-  .then(() => {
-    alert("Account Created Successfully ✅");
-    window.location.href = "dashboard.html";
-  })
-  .catch((error) => {
-    alert(error.message);
-  });
-
-}
+    .then(() => {
+      alert("Account Created Successfully ✅");
+      window.location.href = "select.html";
+    })
+    .catch((error) => {
+      alert(error.message);
+    });
+};
 
 // LOGIN
-window.login = function(){
-
+window.login = function () {
   let email = document.getElementById("loginEmail").value;
   let password = document.getElementById("loginPassword").value;
 
-  if(!email || !password){
-    alert("Enter login details!");
-    return;
-  }
-
   signInWithEmailAndPassword(auth, email, password)
-  .then(() => {
-    alert("Login Successful ✅");
-    window.location.href = "dashboard.html";
-  })
-  .catch((error) => {
-    alert(error.message);
-  });
-
-}
+    .then(() => {
+      alert("Login Successful ✅");
+      window.location.href = "select.html";
+    })
+    .catch((error) => {
+      alert(error.message);
+    });
+};
 
 </script>
 
