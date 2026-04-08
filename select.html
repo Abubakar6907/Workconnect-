@@ -3,105 +3,120 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Select Role</title>
+<title>Select Role - WorkConnect</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 
 <style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Poppins',sans-serif;
+}
+
 body{
-  background:linear-gradient(135deg,#27ae60,#2ecc71);
+  background: linear-gradient(135deg,#27ae60,#2ecc71);
   display:flex;
   justify-content:center;
   align-items:center;
-  height:100vh;
-  font-family:sans-serif;
+  min-height:100vh;
 }
 
+/* Container */
 .container{
-  background:white;
-  padding:30px;
-  border-radius:12px;
   text-align:center;
-  width:350px;
+  width:100%;
+  max-width:420px;
+  padding:20px;
 }
 
-h2{
+/* Logo */
+.logo{
+  width:80px;
+  margin-bottom:10px;
+}
+
+/* Title */
+h1{
+  color:white;
   margin-bottom:20px;
 }
 
-.btn{
-  display:block;
-  width:100%;
-  padding:15px;
-  margin:10px 0;
-  border:none;
-  border-radius:8px;
-  font-size:18px;
+/* Cards */
+.card{
+  background:white;
+  padding:20px;
+  margin:12px 0;
+  border-radius:12px;
   cursor:pointer;
+  transition:0.3s;
+  box-shadow:0 6px 18px rgba(0,0,0,0.2);
+  border-left:6px solid #27ae60;
 }
 
-.worker{
+.card:hover{
+  transform:scale(1.04);
+}
+
+/* Heading */
+.card h2{
+  color:#27ae60;
+  margin-bottom:8px;
+}
+
+/* Text */
+.card p{
+  color:#555;
+  font-size:13px;
+  line-height:1.5;
+}
+
+/* Button style inside */
+.card .btn{
+  margin-top:10px;
+  display:inline-block;
+  padding:8px 20px;
   background:#27ae60;
   color:white;
+  border-radius:6px;
+  font-size:13px;
 }
 
-.employer{
-  background:#2c3e50;
-  color:white;
-}
 </style>
 </head>
 
 <body>
 
 <div class="container">
-  <h2>Select Your Role</h2>
 
-  <button class="btn worker" onclick="selectRole('worker')">
-    I am a Worker
-  </button>
+<img src="logo.png" class="logo">
+<h1>Choose Your Role</h1>
 
-  <button class="btn employer" onclick="selectRole('employer')">
-    I am an Employer
-  </button>
+<!-- WORKER -->
+<div class="card" onclick="goWorker()">
+  <h2>Worker</h2>
+  <p>Turn your skills into income. Get jobs, build trust, and grow fast.</p>
+  <div class="btn">Start as Worker</div>
 </div>
 
-<script type="module">
+<!-- EMPLOYER -->
+<div class="card" onclick="goEmployer()">
+  <h2>Employer</h2>
+  <p>Hire trusted professionals easily. Fast, reliable, and stress-free.</p>
+  <div class="btn">Hire a Worker</div>
+</div>
 
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getAuth } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import { getFirestore, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+</div>
 
-const firebaseConfig = {
-  apiKey: "AIzaSyC6-U5jWVY4Vhf_N-Rikfm9Ss4grTgMw4A",
-  authDomain: "work-connect-fa647.firebaseapp.com",
-  projectId: "work-connect-fa647",
-  storageBucket: "work-connect-fa647.appspot.com",
-  messagingSenderId: "80462081450",
-  appId: "1:80462081450:web:1b8813f2715510c2f14fd3"
-};
+<script>
+function goWorker(){
+  window.location.href = "worker.html";
+}
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
-
-window.selectRole = async (role) => {
-  let user = auth.currentUser;
-
-  if(!user){
-    alert("Please login first");
-    return;
-  }
-
-  await updateDoc(doc(db,"users",user.uid),{
-    role: role
-  });
-
-  if(role === "worker"){
-    window.location.href = "worker-dashboard.html";
-  }else{
-    window.location.href = "employer-dashboard.html";
-  }
-};
-
+function goEmployer(){
+  window.location.href = "employer.html";
+}
 </script>
 
 </body>
